@@ -15,7 +15,7 @@ let id = 0
 
 // 总共爬多少本
 const urlList = require('./url')
-.slice(0, 10)
+// .slice(0, 10)
 
 function bookType(str) {
   if (str.indexOf('连载') !== -1) return '连载'
@@ -25,6 +25,7 @@ function bookType(str) {
 function fetList(url, callback, id) {
   superagent.get(url)
     .charset('gbk')
+    .buffer(true)
     .end((err, res) => {
       const $ = cheerio.load(res.text)
       let author = $('#info p').first().text().substr($('#info p').first().text().indexOf('：') + 1)
@@ -50,12 +51,12 @@ function fetList(url, callback, id) {
 }
 
 app.get('/', (req, res, next) => {
-  async.mapLimit(urlList, 5, (url, callback) => {
+  async.mapLimit(urlList, 100, (url, callback) => {
     id ++
     fetList(url, callback, id)
   }, (err, results) => {
     res.send(results)
-    // saveToMysql(results, pool,'insert into booklist set ?')
+    saveToMysql(results, pool,'insert into booklist set ?')
   })
 })
 

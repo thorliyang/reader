@@ -15,7 +15,8 @@ const pool = mysql.createPool(dbConfig.mysql)
 let id = 0
 
 const urlList = require('./url')
-let num = 1
+const num = 1  // 从第几本开始
+const maxNum = urlList.length + 1 // 一共爬几本书
 let urlID = num // 第几本书
 let url = urlList[urlID - 1]
 let table = num //表名
@@ -34,10 +35,30 @@ function reconvert(str) {
   return str
 }
 
+function createTABLE() {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `CREATE TABLE IF NOT EXISTS book${table} (
+        id int(10) NOT NULL AUTO_INCREMENT,
+        bookName varchar(100),
+        title varchar(100),
+        content varchar(21000),
+        PRIMARY KEY (id) 
+      ) ENGINE=MyISAM DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci CHECKSUM=0 ROW_FORMAT=DYNAMIC DELAY_KEY_WRITE=0`,
+      resolve
+    )
+  })
+}
+
 function fetUrl(url, callback, id) {
   superagent.get(url)
     .charset('gbk')
+    .buffer(true)
     .end((err, res) => {
+      if (err) {
+        fetUrl(url, callback, id)
+        return false
+      }
       let $ = cheerio.load(res.text)
       const arr = []
       const content = reconvert($("#content").html())
@@ -48,7 +69,6 @@ function fetUrl(url, callback, id) {
       })
       const obj = {
         id,
-        err: 0,
         bookName: $('.footer_cont a').text(),
         title: $('.bookname h1').text(),
         content: arr.join('-').slice(0, 20000) //由于需要保存至mysql中，不支持直接保存数组，所以将数组拼接成字符串，取出时再分割字符串即可,mysql中varchar最大长度，可改为text类型
@@ -61,25 +81,39 @@ function fetUrl(url, callback, id) {
 function saveToMysql(results) {
   id = 0
   results.some(result => {
-    pool.query(
-      `create table book${table} (
-        id int(10) NOT NULL AUTO_INCREMENT,
-        err int(10) 
-      )`
-    )
-    pool.query('insert into book' + table + 'set ?', result, (err, res) => {
+    pool.query('insert into book' + table + ' set ?', result, (err, res) => {
       if (err) throw err
-      console.log(`insert ${result.id} success`)
+      if (result.id === results.length) {
+        urlID ++
+        if (urlID < maxNum) {
+          url = urlList[urlID - 1]
+          table++
+          main(url)
+        } else {
+          console(`
+
+            =====================
+
+            结束
+
+            =====================
+            
+          `)
+        }
+        return true
+      }
     })
   })
 } 
 
 function main(url) {
+  console.log(`第${urlID}本书`)
   superagent.get(url)
     .charset('gbk')
+    .buffer(true)
     .end((err, res) => {
       console.log(url)
-      var $ = cheerio.load(res.text)
+      let $ = cheerio.load(res.text)
       let urls = []
       total = $('#list dd').length
       console.log(`共${total}章`)
@@ -88,18 +122,22 @@ function main(url) {
           urls.push('http://www.zwdu.com' + $(v).find('a').attr('href'))
         }
       })
-
-      async.mapLimit(urls, 5, (url, callback) => {
-        id++
+      async.mapLimit(urls, 500, (url, callback) => {
+        id ++
         fetUrl(url, callback, id)
       }, (err, results) => {
-        saveToMysql(results)
+        const promise = createTABLE()
+        promise.then((err, res) => {
+          if (err) {
+            throw err
+          } else {
+            saveToMysql(results)
+          }
+        })
       })
     })
 }
 
-app.get('/', (req) => {
+app.listen('3379', () => {
   main(url)
 })
-
-app.listen('3379')

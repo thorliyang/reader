@@ -1,4 +1,4 @@
-module.exports = function(results, pool,select) {
+module.exports = function(results, pool, select) {
   results.forEach((result) => {
     pool.query(select, result, (err, res) => {
       if (err) throw err

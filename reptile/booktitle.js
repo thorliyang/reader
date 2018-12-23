@@ -15,11 +15,12 @@ let id = 0
 
 // 总共爬多少本
 const urlList = require('./url')
-.slice(0, 10)
+// .slice(0, 10)S
 
 function fetList(url, callback, id) {
   superagent.get(url)
     .charset('gbk')
+    .buffer(true)
     .end((err, res) => {
       const $ = cheerio.load(res.text)
       let content = []
@@ -37,12 +38,12 @@ function fetList(url, callback, id) {
 }
 
 app.get('/', (req, res) => {
-  async.mapLimit(urlList, 5, (url, callback) => {
+  async.mapLimit(urlList, 100, (url, callback) => {
     id++
     fetList(url, callback, id)
   }, (err, results) => {
     res.send(results)
-    // saveToMysql(results, pool, 'insert into booktitles set ?')
+    saveToMysql(results, pool, 'insert into booktitles set ?')
   })
 })
 

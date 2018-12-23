@@ -1,51 +1,25 @@
 const urlList = [
-  //1、择天记
   'http://www.zwdu.com/book/8634/',
-  //2、雪中悍刀行
   'http://www.zwdu.com/book/7718/',
-  //3、武道宗师
   'http://www.zwdu.com/book/22104/',
-  //4、一念永恒
   'http://www.zwdu.com/book/16684/',
-  //5、圣墟
   'http://www.zwdu.com/book/23488/',
-  //6、天道图书馆
   'http://www.zwdu.com/book/23925/',
-  //7、重生之都市修仙
   'http://www.zwdu.com/book/20179/',
-  //8、斗战狂潮
   'http://www.zwdu.com/book/20408/',
-  //9、我真是大明星
   'http://www.zwdu.com/book/8827/',
-  //10、修真聊天群
   'http://www.zwdu.com/book/11019/',
-  //11、我的1979
   'http://www.zwdu.com/book/19834/',
-  //12、帝霸
   'http://www.zwdu.com/book/9623/',
-  //13、重生完美时代
   'http://www.zwdu.com/book/13587/',
-  //14、放开那个女巫
   'http://www.zwdu.com/book/16556/',
-  //15、美食供应商
   'http://www.zwdu.com/book/19523/',
-  //16、银狐
   'http://www.zwdu.com/book/11022/',
-  //17、不朽凡人
   'http://www.zwdu.com/book/20100/',
-  //18、全职高手
   'http://www.zwdu.com/book/7567/',
-  //19、雪鹰领主
   'http://www.zwdu.com/book/10598/',
-  //20、五行天
   'http://www.zwdu.com/book/10978/',
-  "http://www.zwdu.com/book/23488/",
-  "http://www.zwdu.com/book/23488/",
-  "http://www.zwdu.com/book/16684/",
-  "http://www.zwdu.com/book/16684/",
   "http://www.zwdu.com/book/14507/",
-  "http://www.zwdu.com/book/14507/",
-  "http://www.zwdu.com/book/13205/",
   "http://www.zwdu.com/book/13205/",
   "http://www.zwdu.com/book/18395/",
   "http://www.zwdu.com/book/12696/",
@@ -70,7 +44,6 @@ const urlList = [
   "http://www.zwdu.com/book/8634/",
   "http://www.zwdu.com/book/8017/",
   "http://www.zwdu.com/book/7846/",
-  "http://www.zwdu.com/book/20100/",
   "http://www.zwdu.com/book/20100/",
   "http://www.zwdu.com/book/21082/",
   "http://www.zwdu.com/book/20408/",
@@ -98,8 +71,6 @@ const urlList = [
   "http://www.zwdu.com/book/8827/",
   "http://www.zwdu.com/book/8733/",
   "http://www.zwdu.com/book/7585/",
-  "http://www.zwdu.com/book/11022/",
-  "http://www.zwdu.com/book/11022/",
   "http://www.zwdu.com/book/20962/",
   "http://www.zwdu.com/book/20711/",
   "http://www.zwdu.com/book/20096/",
@@ -113,7 +84,6 @@ const urlList = [
   "http://www.zwdu.com/book/10318/",
   "http://www.zwdu.com/book/9626/",
   "http://www.zwdu.com/book/8523/",
-  "http://www.zwdu.com/book/8523/",
   "http://www.zwdu.com/book/23624/",
   "http://www.zwdu.com/book/21688/",
   "http://www.zwdu.com/book/21544/",
@@ -126,7 +96,6 @@ const urlList = [
   "http://www.zwdu.com/book/8966/",
   "http://www.zwdu.com/book/8036/",
   "http://www.zwdu.com/book/7918/",
-  "http://www.zwdu.com/book/10699/",
   "http://www.zwdu.com/book/10699/",
   "http://www.zwdu.com/book/24519/",
   "http://www.zwdu.com/book/23620/",
