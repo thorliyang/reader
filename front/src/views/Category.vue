@@ -1,6 +1,6 @@
 <template>
   <div id="category" styleName="category">
-    <nav-header :title="title" />
+    <comm-header :title="title" />
     <div styleName="category-content">
       <div styleName="category-list">
         <mt-loadmore 
@@ -39,8 +39,9 @@
 
 <script>
 import CSSModules from 'vue-css-modules'
+import { mapState } from 'vuex'
 import { Indicator } from 'mint-ui'
-import navHeader from '../components/NavHeader/NavHeader'
+import commHeader from '../components/CommHeader/CommHeader'
 
 const count = 10
 let begin = 0
@@ -48,7 +49,7 @@ let begin = 0
 export default {
   mixins: [CSSModules()],
   components: {
-    navHeader
+    commHeader
   },
   data() {
     return {
@@ -62,8 +63,8 @@ export default {
       text: '加载中...',
       spinnerType: 'triple-bounce'
     })
-    this.$nextTick().then(() =>{
-      this.getCategory(this.$route.query.type, () => {
+    this.$nextTick().then(() => {
+      this.joinCategory(this.$route.query.type, () => {
         this.LoadingEnter = false
         Indicator.close()
       })
@@ -76,8 +77,8 @@ export default {
     }
   },
   methods: {
-    getCategory(type, fn) {
-      this.$http('/type', {
+    joinCategory(type, fn) {
+      this.$store.dispatch('getCategory', {
         params: {
           type, begin, count
         }
@@ -87,8 +88,8 @@ export default {
           this.$refs.loadmore.onBottomLoaded()
           return false
         }
-        this.categoryList = this.categoryList.concat(res.data)
         begin += 10
+        this.categoryList = this.categoryList.concat(res.data)
         fn()
       })
     },
@@ -96,12 +97,15 @@ export default {
       return intro.replace(/(=|—)+/g, '').trim()
     },
     loadBottom() {
-      this.getCategory(this.$route.query.type, () => {
-        this.$refs.loadmore.onBottomLoaded()
+      this.joinCategory(this.$route.query.type, () => {
+        this.$nextTick().then(() => {
+          this.$refs.loadmore.onBottomLoaded()
+        })
       })
     },
     bookDetailId(id) {
-      this.$store.dispatch('chooseBook', id)
+      begin = 0
+      this.$store.commit('chooseBook', id)
     }
   },
 }

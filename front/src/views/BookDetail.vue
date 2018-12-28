@@ -1,10 +1,10 @@
 <template>
   <div id="book-detail" styleName="book-detail">
-    <nav-header :title="bookDetail.name" />
+    <comm-header :title="bookDetail.name" />
     <div styleName="detail-linear">
       <div styleName="detail-con">
         <div styleName="detail-image">
-          <img v-lazy="bookDetail.images" @error="loadImage" width="100%" />
+          <img :src="bookDetail.images" @error="defaultImge" width="100%" />
         </div>
         <div styleName="detail-main">
           <h3 styleName="name">{{bookDetail.name}}</h3>
@@ -13,7 +13,6 @@
           <p styleName="wordcount">{{bookDetail.wordcount}}万字</p>
           <ratings :score="bookDetail.ratings" />
         </div>
-        
       </div>
       <div styleName="read-btn">
         <div styleName="bookcase">
@@ -22,12 +21,12 @@
           </mt-button>
         </div>
         <div styleName="reading">
-          <mt-button type="default" @click="openBook">
-            <router-link :to="{path:'/reader/'+ bookDetail.id}">开始阅读</router-link>
-          </mt-button>
+            <router-link :to="{path:'/reader/'+ bookDetail.id}">
+              <mt-button type="default" @click="openBook">开始阅读</mt-button>
+            </router-link>
         </div>
       </div>
-      <div v-if="loading">
+      <div>
         <div styleName="detail-intro">
           <p :class="introShow" @click="showmore = !showmore">{{bookDetail.intro}}</p>
         </div>
@@ -53,47 +52,53 @@
 
 <script>
 import CSSModules from 'vue-css-modules'
-import navHeader from '../components/NavHeader/NavHeader'
+import { mapState } from 'vuex'
+import commHeader from '../components/CommHeader/CommHeader'
 import ratings from '../components/Ratings/Ratings'
 import similar from '../components/Similar/Similar'
 
 export default {
   mixins: [CSSModules()],
   components: {
-    navHeader, ratings, similar
-  },
-  created() {
-    this.getBookDetail(this.$route.params.id)
+    commHeader, ratings, similar
   },
   data() {
     return {
-      loading: true,
-      content: null,
-      bookDetail: {},
       likes: [],  //相似推荐
       showmore: false //简介显示更多
     }
   },
-  methods: {
-    getBookDetail(bookID) {
-      this.$http('booklist', {
-        params: {
-          id: bookID
-        }
-      }).then((res) => {
-        this.bookDetail = res.data
-        this.likes = res.data.like.split('-')
-      })
-    },
-    loadImage(e) {
-      this.common.defaultImage(e)
-    },
-    addBookcase() {},
-    openBook() {}
+  created() {
+    this.getBookDetail(this.$route.params.id)
   },
   computed: {
+    ...mapState([
+      'bookDetail'
+    ]),
     introShow() {
       return !this.showmore ? this.$style['show5'] : ''
+    }
+  },
+  methods: {
+    getBookDetail(bookID) {
+      this.$store.dispatch('getBookDetail', {
+        params: {
+          id: bookID
+        },
+        callback: (data) => {
+          this.likes = data.like.split('-')
+        }
+      })
+    },
+    addBookcase() {},
+    openBook() {},
+    defaultImge(e) {
+      this.common.defaultImage(e)
+    }
+  },
+  watch: {
+    '$route' () {
+      this.getBookDetail(this.$route.params.id)
     }
   }
 }

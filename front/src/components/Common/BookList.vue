@@ -39,7 +39,7 @@ export default {
   props: ['datalist', 'title'],
   methods: {
     bookDetailId(id) {
-      this.$store.dispatch('chooseBook', id)
+      this.$store.commit('chooseBook', id)
     }
   },
   filters: {

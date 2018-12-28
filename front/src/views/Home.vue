@@ -25,18 +25,19 @@
       </router-link>
     </nav>
     <div>
-      <recommend :booklist="booklist | hot" title="热门小说" />
-      <recommend :booklist="booklist | top" title="排行榜" />
-      <recommend :booklist="booklist | free" title="限时免费" />
-      <book-list :datalist="booklist | newbook" title="新书抢鲜" />
-      <book-list :datalist="booklist | endbook" title="畅销完本" />
-      <book-list :datalist="booklist | like" title="猜你喜欢" />
+      <recommend :booklist="hotbook" title="热门小说" />
+      <recommend :booklist="topbook" title="排行榜" />
+      <recommend :booklist="freebook" title="限时免费" />
+      <book-list :datalist="newbook" title="新书抢鲜" />
+      <book-list :datalist="endbook" title="畅销完本" />
+      <book-list :datalist="likebook" title="猜你喜欢" />
     </div>
   </div>
 </template>
 
 <script>
 import CSSModules from 'vue-css-modules'
+import { mapGetters } from 'vuex'
 import recommend from '../components/Common/Recommend'
 import bookList from '../components/Common/BookList'
 
@@ -47,7 +48,6 @@ export default {
   },
   data () {
     return {
-      booklist: [],
       type: [
         {
           num: 1,
@@ -73,46 +73,16 @@ export default {
     }
   },
   created() {
-    this.getData()
+    this.fetchBooklist()
   },
-  filters: {
-    hot(arrayList) {
-      return arrayList.filter((item, index) => {
-        return index < 20 && index % 2 === 1
-      })
-    },
-    top(arrayList) {
-      return arrayList.filter((item, index) => {
-        return index < 20 && index % 2 === 0
-      })
-    },
-    free(arrayList) {
-      return arrayList.filter((item, index) => {
-        return index < 20 && index % 3 === 2
-      })
-    },
-    newbook(arrayList) {
-      return arrayList.filter((item, index) => {
-        return index < 20 && index % 3 === 2
-      }).splice(0, 3)
-    },
-    endbook(arrayList) {
-      return arrayList.filter((item) => {
-        return item.serialize === '完本' && item.ratings >= 4
-      }).splice(0, 5)
-    },
-    like(arrayList) {
-      return arrayList.filter((item, index) => {
-        return index % 4 === 2
-      }).splice(0, 3)
-    }
+  computed: {
+    ...mapGetters([
+      'hotbook', 'topbook', 'freebook', 'newbook', 'endbook', 'likebook'
+    ])
   },
   methods: {
-    getData() {
-      this.$http('/booklist')
-        .then((res) => {
-          this.booklist = res.data
-        })
+    fetchBooklist() {
+      this.$store.dispatch('getBooklist')
     },
     imageLinks (index) {
       return require("../assets/images/" + index + ".jpg")

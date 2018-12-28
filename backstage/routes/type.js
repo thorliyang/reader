@@ -21,12 +21,9 @@ router.get('/', (req, res) => {
   const type = getType(req.query.type)
   let begin = Number(req.query.begin)
   let count = Number(req.query.count)
-  setTimeout(() => {
-    query(`select * from booklist where type = ? ORDER BY id ASC limit ${begin},${count};`, [type], (err, results, fields) => {
-      res.send(results)
-    })
-  }, 1500)
-  
+  query(`select * from booklist where type = ? ORDER BY id ASC limit ${begin},${count};`, [type], (err, results, fields) => {
+    res.send(results)
+  })
 })
 
 module.exports = router

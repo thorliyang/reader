@@ -23,7 +23,7 @@ export default {
   props: ['title', 'booklist'],
   methods: {
     bookDetailId(id) {
-      this.$store.dispatch('chooseBook', id)
+      this.$store.commit('chooseBook', id)
     }
   }
 }

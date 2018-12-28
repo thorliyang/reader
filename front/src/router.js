@@ -25,6 +25,11 @@ export default new Router({
       path: '/bookdetail/:id',
       name: 'bookdetail',
       component: () => import('./views/BookDetail.vue')
+    },
+    {
+      path: '/reader/:id',
+      name: 'reader',
+      component: () => import('./views/Reader.vue')
     }
   ]
 })

@@ -1,7 +1,7 @@
 <template>
   <div id="similar" styleName="similar" @click="toBookDetail(bookDetail.id)">
     <div styleName="image">
-      <img v-lazy="bookDetail.images" @error="loadImage" width="100%" height="100%">
+      <img v-lazy="bookDetail.images" width="100%" height="100%">
     </div>
     <p styleName="title">{{bookDetail.name}}</p>
   </div>
@@ -28,18 +28,17 @@ export default {
   },
   methods: {
     getBookDetail(id) {
-      this.$http('/booklist', {
-        params: { id }
+      this.$store.dispatch('getLlkeBook', {
+        params: {
+          id
+        }
       }).then((res) => {
         this.bookDetail = res.data
       })
     },
     toBookDetail(id) {
       this.$router.push({path: '/bookdetail/' + id})
-      document.body.scrollTop = 0
-    },
-    loadImage(e) {
-      this.common.defaultImage(e)
+      document.documentElement.scrollTop = 0
     }
   },
   watch: {
