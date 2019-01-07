@@ -24,11 +24,7 @@ const state = {
   // 夜晚模式
   bg_night: false,
   // 字体大小
-  fz_size: 16,
-  // 当前阅读章节
-  curChapter: 1,
-  // 阅读过的书籍数据
-  booksReadInfo: {}
+  fz_size: 16
 }
 
 export default new Vuex.Store({

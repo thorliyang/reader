@@ -9,12 +9,21 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/home'
-    },
-    {
-      path: '/home',
-      name: 'home',
-      component: () => import('./views/Home.vue')
+      name: 'tabbar',
+      redirect: '/home',
+      component: () => import('./views/Tabbar.vue'),
+      children: [
+        {
+          path: '/home',
+          name: 'home',
+          component: () => import('./views/Home.vue')
+        },
+        {
+          path: '/bookrack',
+          name: 'bookrack',
+          component: () => import('./views/Bookrack.vue')
+        }
+      ]
     },
     {
       path: '/category',

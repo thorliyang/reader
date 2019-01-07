@@ -21,9 +21,9 @@
           </mt-button>
         </div>
         <div styleName="reading">
-            <router-link :to="{path:'/reader/'+ bookDetail.id}">
-              <mt-button type="default" @click="openBook">开始阅读</mt-button>
-            </router-link>
+          <router-link :to="{path:'/reader/'+ bookDetail.id}">
+            <mt-button type="default" @click="openBook">开始阅读</mt-button>
+          </router-link>
         </div>
       </div>
       <div>
@@ -53,6 +53,8 @@
 <script>
 import CSSModules from 'vue-css-modules'
 import { mapState } from 'vuex'
+import { Toast } from 'mint-ui'
+import localEvent from '@/store/local'
 import commHeader from '../components/CommHeader/CommHeader'
 import ratings from '../components/Ratings/Ratings'
 import similar from '../components/Similar/Similar'
@@ -64,12 +66,14 @@ export default {
   },
   data() {
     return {
+      bookrack: {},
       likes: [],  //相似推荐
-      showmore: false //简介显示更多
+      showmore: false, //简介显示更多
+      bookrackInfo: {}
     }
   },
   created() {
-    this.getBookDetail(this.$route.params.id)
+    this.getBookDetail()
   },
   computed: {
     ...mapState([
@@ -80,25 +84,45 @@ export default {
     }
   },
   methods: {
-    getBookDetail(bookID) {
+    getBookDetail() {
+      const id = this.$route.params.id
       this.$store.dispatch('getBookDetail', {
-        params: {
-          id: bookID
-        },
+        params: { id },
         callback: (data) => {
           this.likes = data.like.split('-')
         }
       })
     },
-    addBookcase() {},
+    addBookcase() {
+      const id = this.$route.params.id
+      const localBookrackInfo = localEvent.StorageGetter('bookrackInfo')
+
+      this.bookrackInfo = localBookrackInfo || {}
+      
+      if (this.bookrackInfo[id]) {
+        Toast({
+          message: '已收藏，可在书架中阅读',
+          position: 'bottom',
+          duration: 1000
+        })
+      } else {
+        Toast({
+          message: '收藏成功',
+          position: 'bottom',
+          duration: 1000
+        })
+        this.bookrackInfo[id] = this.bookDetail
+        localEvent.StorageSetter('bookrackInfo', this.bookrackInfo)
+      }
+    },
     openBook() {},
     defaultImge(e) {
       this.common.defaultImage(e)
     }
   },
   watch: {
-    '$route' () {
-      this.getBookDetail(this.$route.params.id)
+    '$route'() {
+      this.getBookDetail()
     }
   }
 }

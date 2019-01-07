@@ -1,9 +1,11 @@
 <template>
+  <!-- eslint-disable-next-line -->
   <div id="list-panel" styleName="list-panel" @touchmove:prevent>
     <div styleName="list">
       <mt-header styleName="list-nav" title="目录">
         <mt-button styleName="back" slot="left" icon='back' @click="hideListPanel"></mt-button>
       </mt-header>
+      <!-- eslint-disable-next-line -->
       <div styleName="list-content" @touchmove:prevent>
         <ul>
           <li v-for="(item, index) in chapterList" :key="index" @click="jumpTo(index)">· {{index + 1}}. {{item}}</li>
@@ -49,10 +51,9 @@ export default {
       })
     },
     jumpTo(i) {
-      this.$store.commit('curChapter')
+      this.$emit('changeChapter', i + 1)
       this.$store.commit('toggleBar', false)
       this.hideListPanel()
-      document.body.scrollTop = 0
     },
     hideListPanel() {
       this.$store.commit('toggleListPanel', false)

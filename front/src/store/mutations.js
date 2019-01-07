@@ -10,14 +10,6 @@ export default {
   chooseBook: (state, id) => {
     state.curBookDetailId = id
   },
-  curChapter: (state, num) => {
-    state.curChapter = num
-  },
-  saveBooksInfo: (state, obj) => {
-    let { book } = obj
-    state.booksReadInfo[book] = obj
-    localEvent.StorageSetter('bookreaderinfo', state.booksReadInfo)
-  },
   toggleBar: (state, boolean) => {
     if (boolean !== undefined) {
       state.bar = boolean
@@ -66,5 +58,5 @@ export default {
   switchNight: (state) => {
     state.bg_night = !state.bg_night
     localEvent.StorageSetter('bg_night', state.bg_night)
-  },
+  }
 }

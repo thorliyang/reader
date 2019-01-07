@@ -70,6 +70,9 @@ export default {
       })
     })
   },
+  beforeDestroy () {
+    begin = 0
+  },
   computed: {
     title() {
       let type = parseInt(this.$route.query.type)

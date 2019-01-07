@@ -24,7 +24,7 @@
         <h4 styleName="guide-nav-h">{{item.word}}</h4>
       </router-link>
     </nav>
-    <div>
+    <div styleName="referrals">
       <recommend :booklist="hotbook" title="热门小说" />
       <recommend :booklist="topbook" title="排行榜" />
       <recommend :booklist="freebook" title="限时免费" />
