@@ -1,7 +1,7 @@
 <template>
   <div id="similar" styleName="similar" @click="toBookDetail(bookDetail.id)">
     <div styleName="image">
-      <img v-lazy="bookDetail.images" width="100%" height="100%">
+      <img :src="bookDetail.images" width="100%" height="100%" @error="defaultImge">
     </div>
     <p styleName="title">{{bookDetail.name}}</p>
   </div>
@@ -39,6 +39,9 @@ export default {
     toBookDetail(id) {
       this.$router.push({path: '/bookdetail/' + id})
       document.documentElement.scrollTop = 0
+    },
+    defaultImge(e) {
+      this.common.defaultImage(e)
     }
   },
   watch: {

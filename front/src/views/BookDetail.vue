@@ -1,6 +1,6 @@
 <template>
   <div id="book-detail" styleName="book-detail">
-    <comm-header :title="bookDetail.name" />
+    <comm-header title="图书详情" />
     <div styleName="detail-linear">
       <div styleName="detail-con">
         <div styleName="detail-image">
@@ -69,7 +69,7 @@ export default {
       bookrack: {},
       likes: [],  //相似推荐
       showmore: false, //简介显示更多
-      bookrackInfo: {}
+      bookrackInfo: []
     }
   },
   created() {
@@ -97,9 +97,9 @@ export default {
       const id = this.$route.params.id
       const localBookrackInfo = localEvent.StorageGetter('bookrackInfo')
 
-      this.bookrackInfo = localBookrackInfo || {}
+      this.bookrackInfo = localBookrackInfo || []
       
-      if (this.bookrackInfo[id]) {
+      if (this.isRepeat(this.bookrackInfo, id)) {
         Toast({
           message: '已收藏，可在书架中阅读',
           position: 'bottom',
@@ -111,14 +111,19 @@ export default {
           position: 'bottom',
           duration: 1000
         })
-        this.bookrackInfo[id] = this.bookDetail
+        this.bookrackInfo.unshift(this.bookDetail)
         localEvent.StorageSetter('bookrackInfo', this.bookrackInfo)
       }
     },
     openBook() {},
     defaultImge(e) {
       this.common.defaultImage(e)
-    }
+    },
+    isRepeat(arr, id) {
+      return arr.map(item => {
+        return item.id
+      }).indexOf(Number(id)) !== -1
+    }  
   },
   watch: {
     '$route'() {

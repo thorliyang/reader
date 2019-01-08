@@ -1,13 +1,9 @@
-.top-nav-enter-active, 
-.top-nav-leave-active,
-.bottom-nav-enter-active, 
-.bottom-nav-leave-active,
-.font-nav-enter-active, 
-.font-nav-leave-active,
-.list-nav-enter-active, 
-.list-nav-leave-active,
-.cover-enter-active, 
-.cover-leave-active {
+.top-nav-enter-active, .top-nav-leave-active,
+.bottom-nav-enter-active, .bottom-nav-leave-active,
+.font-nav-enter-active, .font-nav-leave-active,
+.list-nav-enter-active, .list-nav-leave-active,
+.cover-enter-active, .cover-leave-active
+{
   transition: all .5s;
 }
 
@@ -35,4 +31,20 @@
 .cover-enter, 
 .cover-leave-active {
   opacity: 0
+}
+
+.shadow-enter-active, .shadow-leave-active,
+.options-enter-active, .options-leave-active 
+{
+  transition: all .3s
+}
+
+.shadow-enter, 
+.shadow-leave-active {
+  opacity: 0
+}
+
+.options-enter, 
+.options-leave-active {
+  transform: scale(0, 0)
 }

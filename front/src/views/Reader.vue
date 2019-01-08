@@ -101,7 +101,8 @@ export default {
         }
       }).then(res => {
         this.title = res.data.title
-        this.content = res.data.content.split('-')
+        let text = res.data.content.replace(/<br>/g, '-')
+        this.content = text.split('-')
         this.loading = false
         this.$nextTick(() => {
           this.maxH = parseInt(window.getComputedStyle(this.$refs.content).height) - window.screen.height + 15
@@ -110,20 +111,21 @@ export default {
     },
     startScroll(target, speed) {
       let times = null
-      let body = document.documentElement
       times = setInterval(() => {
         if (speed > 0) {
-          if (body.scrollTop <= target) {
-            body.scrollTop += speed 
+          if (this.curMigration <= target) {
+            this.curMigration += speed 
           }
-          if (body.scrollTop > target || body.scrollTop + window.screen.height >= body.scrollHeight) {
+          if (this.curMigration > target || this.curMigration + window.screen.height >= document.documentElement.scrollHeight) {
+            this.saveBooksInfo()
             clearInterval(times)
           }
         } else {
-          if (body.scrollTop >= target) {
-            body.scrollTop += speed
+          if (this.curMigration >= target) {
+            this.curMigration += speed
           }
-          if (body.scrollTop < target || body.scrollTop <= 0) {
+          if (this.curMigration < target || this.curMigration >= 0) {
+            this.saveBooksInfo()
             clearInterval(times)
           }
         }
@@ -151,27 +153,22 @@ export default {
     },
     // 向上翻页
     pageUp() {
-      this.pageFuc(() => {
-        let target = this.curMigration + window.screen.height - 80
-        return target >= 0 ? 0 : target
-      })
-      // this.startScroll(target, -20)
+      let target = this.curMigration + window.screen.height - 80
+      target = target >= 0 ? 0 : target
+      this.pageFuc(target, 10)
     },
     // 向下翻页
     pageDown() {
-      this.pageFuc(() => {
-        let target = this.curMigration - window.screen.height + 80
-        return Math.abs(target) > this.maxH ? -this.maxH : target
-      })
-      // this.startScroll(target, 20)
+      let target = this.curMigration - window.screen.height + 80
+      target = Math.abs(target) > this.maxH ? -this.maxH : target
+      this.pageFuc(target, -10)
     },
     // 翻页函数
-    pageFuc(fn) {
+    pageFuc(target, speed) {
       if (this.bar === true) {
         this.clickBar()
       } else {
-        this.curMigration = fn()
-        this.saveBooksInfo()
+        this.startScroll(target, speed)
       }
     },
     // 切换上下工具栏，如果字体面板显示点击也关闭

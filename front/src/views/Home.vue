@@ -2,8 +2,7 @@
   <div id="home" styleName="home">
     <nav styleName="nav-header">
       <header>
-        <a href="/" styleName="brand">移动书城</a>
-        <a href="/" styleName="avatar"></a>
+        <span styleName="brand">移动书城</span>
       </header>
       <div styleName="swipe">
         <mt-swipe :auto="5000">
@@ -101,17 +100,8 @@ export default {
       padding 0 15px
       justify-content space-between
       align-items center
-      font-size 20px
-      text-indent -8888px
-      .brand 
-        display block
-        width 100px
-        background url(http://qidian.gtimg.com/qdm/img/logo-qdm.0.50.svg) no-repeat left
-      .avatar
-        width 24px
-        height 24px
-        background url(../assets/images/avatar.png) no-repeat center
-        background-size 100%
+      font-size 16px
+      font-family 'Arial, Helvetica, sans-serif'
     .swipe
       height 3.05rem
   .home-nav
