@@ -20,7 +20,7 @@ Vue.use(MintUI, {
 
 // axios.defaults.withCredentials = true
 axios.defaults.baseURL = 'http://localhost:3000'
-Vue.prototype.$http = axios
+Vue.prototype.axios = axios
 
 Vue.config.productionTip = false
 

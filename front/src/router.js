@@ -3,6 +3,15 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
+function components(compName) {
+  localStorage.setItem('token', '')
+  if (!localStorage.getItem('token')) {
+    return () => import('./views/login.vue')
+  } else {
+    return () => import('./views/' + compName + '.vue')
+  }
+}
+
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -11,7 +20,7 @@ export default new Router({
       path: '/',
       name: 'tabbar',
       redirect: '/home',
-      component: () => import('./views/Tabbar.vue'),
+      component: components('Tabbar'),
       children: [
         {
           path: '/home',

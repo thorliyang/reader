@@ -11,7 +11,7 @@ const query = (sql, options, callback) => {
   pool.getConnection((err, connection) => {
     connection.query(sql, options, (error, results, fields) => {
       connection.release()
-      if (error) throw error
+      if (error) console.log(error)
       callback(err, results, fields)
     })
   })

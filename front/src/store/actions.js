@@ -31,5 +31,5 @@ export default {
     let { params } = options
     let req = fetchChapter(params)
     return req
-  }
+  },
 }
