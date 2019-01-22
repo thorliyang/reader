@@ -36,23 +36,23 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const jwt = require('jsonwebtoken')
+// const jwt = require('jsonwebtoken')
 
-app.use((req, res, next) => {
-  if (req.path !== '/user/login' && req.path !== '/user/register') {
-    const token = req.body.token || req.query.token || req.headers.token
-    jwt.verify(token, config.jwtsecret, (err, decode) => {
-      if (err) {
-        res.send({ code: 403, message: 'token已过期，请重新登录' })
-      } else {
-        req.decoded = decode
-        next()
-      }
-    })
-  } else {
-    next()
-  }
-})
+// app.use((req, res, next) => {
+//   if (req.path !== '/user/login' && req.path !== '/user/register') {
+//     const token = req.body.token || req.query.token || req.headers.token
+//     jwt.verify(token, config.jwtsecret, (err, decode) => {
+//       if (err) {
+//         res.send({ code: 403, message: 'token已过期，请重新登录' })
+//       } else {
+//         req.decoded = decode
+//         next()
+//       }
+//     })
+//   } else {
+//     next()
+//   }
+// })
 
 app.use('/', require('./routes/index'));
 app.use('/booklist', require('./routes/booklist'));

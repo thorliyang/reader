@@ -3,14 +3,14 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-function components(compName) {
-  localStorage.setItem('token', '')
-  if (!localStorage.getItem('token')) {
-    return () => import('./views/login.vue')
-  } else {
-    return () => import('./views/' + compName + '.vue')
-  }
-}
+// function components(compName) {
+//   localStorage.setItem('token', '')
+//   if (!localStorage.getItem('token')) {
+//     return () => import('./views/Home.vue')
+//   } else {
+//     return () => import('./views/' + compName + '.vue')
+//   }
+// }
 
 export default new Router({
   mode: 'history',
@@ -20,7 +20,8 @@ export default new Router({
       path: '/',
       name: 'tabbar',
       redirect: '/home',
-      component: components('Tabbar'),
+      // component: components('Tabbar'),
+      component: () => import('./views/Home.vue'),
       children: [
         {
           path: '/home',

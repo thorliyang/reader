@@ -9,15 +9,24 @@ function resolve(dir) {
 
 module.exports = {
   css: {
-    // modules: true
+    sourceMap: true
   },
+
   devServer: {
     disableHostCheck: true,
     proxy: proxyObj, // string | Object
     before: app => { }
   },
+
   chainWebpack: config => {
     config.resolve.alias
       .set('@', resolve('src'))
-  }
+  },
+
+  baseUrl: undefined,
+  outputDir: undefined,
+  assetsDir: undefined,
+  runtimeCompiler: undefined,
+  productionSourceMap: undefined,
+  parallel: undefined
 }

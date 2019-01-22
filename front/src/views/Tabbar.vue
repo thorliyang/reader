@@ -37,7 +37,6 @@ export default {
     }
   },
   created() {
-    localStorage.setItem('token', null)
     this.selected = this.$route.path.replace(/\//g, '')
   },
   computed: {
